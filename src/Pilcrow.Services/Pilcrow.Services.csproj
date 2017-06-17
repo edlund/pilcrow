@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pilcrow.Core\Pilcrow.Core.csproj" />
+    <ProjectReference Include="..\Pilcrow.Db\Pilcrow.Db.csproj" />
+    <ProjectReference Include="..\Pilcrow.Interfaces\Pilcrow.Interfaces.csproj" />
+  </ItemGroup>
+</Project>

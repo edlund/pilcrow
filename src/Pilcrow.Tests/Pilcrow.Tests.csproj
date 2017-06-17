@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.1.11" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.11" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Pilcrow.Bootstraps\Pilcrow.Bootstraps.csproj" />
+    <ProjectReference Include="..\Pilcrow.Core\Pilcrow.Core.csproj" />
+    <ProjectReference Include="..\Pilcrow.Db\Pilcrow.Db.csproj" />
+    <ProjectReference Include="..\Pilcrow.Interfaces\Pilcrow.Interfaces.csproj" />
+    <ProjectReference Include="..\Pilcrow.Services\Pilcrow.Services.csproj" />
+  </ItemGroup>
+</Project>
