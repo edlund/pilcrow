@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pilcrow.Core.Helpers;
+using Pilcrow.Tests.Core;
 
-namespace Pilcrow.Test.Projects.Core.Helpers
+namespace Pilcrow.Tests.Projects.Core.Helpers
 {
     [TestClass]
-    public class StringHelperTests
+    public class StringHelperTests : Test
     {
         [TestMethod]
         public void SlugifyTest()

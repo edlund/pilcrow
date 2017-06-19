@@ -33,5 +33,17 @@ namespace Pilcrow.Core.Helpers
                 select currentType
             ;
         }
+        
+        public static IEnumerable<Type> GetLeafSubClassTypes(Type parent)
+        {
+            var allTypes = GetSubClassTypes(parent);
+            return from currentType in allTypes
+                where allTypes.Aggregate(true, (
+                    leafType,
+                    otherType
+                ) => leafType && !otherType.GetTypeInfo().IsSubclassOf(currentType))
+                select currentType
+            ;
+        }
     }
 }
