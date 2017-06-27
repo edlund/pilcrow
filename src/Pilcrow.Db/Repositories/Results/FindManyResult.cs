@@ -1,11 +1,10 @@
-
+using MongoDB.Driver;
+using Pilcrow.Db.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using MongoDB.Driver;
-using Pilcrow.Db.Models;
 
-namespace Pilcrow.Db.Helpers
+namespace Pilcrow.Db.Repositories.Results
 {
     public class FindManyResult<TModel>: OperationResult<TModel>, IFindManyResult<TModel>
         where TModel : class, IEntity

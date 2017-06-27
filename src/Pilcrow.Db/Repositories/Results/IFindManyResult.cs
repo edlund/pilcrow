@@ -1,10 +1,9 @@
-
+using Pilcrow.Db.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Pilcrow.Db.Models;
 
-namespace Pilcrow.Db.Helpers
+namespace Pilcrow.Db.Repositories.Results
 {
     public interface IFindManyResult<TModel>: IOperationResult<TModel>
         where TModel : class, IEntity

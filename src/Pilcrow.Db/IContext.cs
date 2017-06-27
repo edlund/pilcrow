@@ -10,5 +10,7 @@ namespace Pilcrow.Db
         IMongoDatabase Database { get; }
         
         void Connect(string connectionString, string databaseName);
+        
+        void DropDatabase(string databaseName);
     }
 }

@@ -1,8 +1,7 @@
-
-using System;
 using Pilcrow.Db.Models;
+using System;
 
-namespace Pilcrow.Db.Helpers
+namespace Pilcrow.Db.Repositories.Results
 {
     public class UpdateResult<TModel>: OperationResult<TModel>, IUpdateResult<TModel>
         where TModel : class, IEntity

@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ using Microsoft.Extensions.DependencyModel;
 
 namespace Pilcrow.Core.Helpers
 {
-    public abstract class AssemblyHelper
+    public static class AssemblyHelper
     {
         public static IEnumerable<Assembly> GetRuntimeAssemblies(Func<AssemblyName, bool> filter)
         {

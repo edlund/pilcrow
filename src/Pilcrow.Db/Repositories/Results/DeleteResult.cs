@@ -1,8 +1,7 @@
-
-using System;
 using Pilcrow.Db.Models;
+using System;
 
-namespace Pilcrow.Db.Helpers
+namespace Pilcrow.Db.Repositories.Results
 {
     public class DeleteResult<TModel>: OperationResult<TModel>, IDeleteResult<TModel>
         where TModel : class, IEntity

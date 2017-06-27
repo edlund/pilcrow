@@ -14,5 +14,10 @@ namespace Pilcrow.Db
             Client = new MongoClient(connectionString);
             Database = Client.GetDatabase(databaseName);
         }
+        
+        public void DropDatabase(string databaseName)
+        {
+            Client.DropDatabase(databaseName);
+        }
     }
 }

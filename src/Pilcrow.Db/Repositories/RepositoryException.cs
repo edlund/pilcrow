@@ -1,7 +1,7 @@
 
 using System;
 
-namespace Pilcrow.Db.Repositories.Exceptions
+namespace Pilcrow.Db.Repositories
 {
     public abstract class RepositoryException : Exception
     {

@@ -1,8 +1,7 @@
-
-using System;
 using Pilcrow.Db.Models;
+using System;
 
-namespace Pilcrow.Db.Helpers
+namespace Pilcrow.Db.Repositories.Results
 {
     public class CreateResult<TModel>: OperationResult<TModel>, ICreateResult<TModel>
         where TModel : class, IEntity

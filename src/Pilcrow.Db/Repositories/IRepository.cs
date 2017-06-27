@@ -1,13 +1,16 @@
-
+using Pilcrow.Db.Models;
+using Pilcrow.Db.Repositories.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Pilcrow.Db.Helpers;
-using Pilcrow.Db.Models;
 
 namespace Pilcrow.Db.Repositories
 {
-    public interface IRepository<TModel>
+    public interface IRepository
+    {
+    }
+    
+    public interface IRepository<TModel> : IRepository
         where TModel : class, IEntity
     {
         string CollectionName(Type type);

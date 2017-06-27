@@ -3,15 +3,18 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Bogus" Version="15.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="1.1.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="Moq" Version="4.7.63" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.1.11" />
     <PackageReference Include="MSTest.TestFramework" Version="1.1.11" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pilcrow.Bootstraps\Pilcrow.Bootstraps.csproj" />
     <ProjectReference Include="..\Pilcrow.Core\Pilcrow.Core.csproj" />
     <ProjectReference Include="..\Pilcrow.Db\Pilcrow.Db.csproj" />
     <ProjectReference Include="..\Pilcrow.Interfaces\Pilcrow.Interfaces.csproj" />
+    <ProjectReference Include="..\Pilcrow.Mvc\Pilcrow.Mvc.csproj" />
     <ProjectReference Include="..\Pilcrow.Services\Pilcrow.Services.csproj" />
   </ItemGroup>
 </Project>

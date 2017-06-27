@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Bootstraps", "Pilcrow.Bootstraps\Pilcrow.Bootstraps.csproj", "{7691F4E5-25D7-48D9-AD5D-C2AD84F3E2CB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Core", "Pilcrow.Core\Pilcrow.Core.csproj", "{5CAD6C13-891A-4B01-B082-196D4948AFD6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Db", "Pilcrow.Db\Pilcrow.Db.csproj", "{4952879E-A819-4EBA-9358-8090B67CE3ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Interfaces", "Pilcrow.Interfaces\Pilcrow.Interfaces.csproj", "{749ACA55-AE86-4800-B719-0F35234E99FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Mvc", "Pilcrow.Mvc\Pilcrow.Mvc.csproj", "{7691F4E5-25D7-48D9-AD5D-C2AD84F3E2CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Services", "Pilcrow.Services\Pilcrow.Services.csproj", "{BD5FA762-4C0A-409C-9BBB-5C7C00719894}"
 EndProject

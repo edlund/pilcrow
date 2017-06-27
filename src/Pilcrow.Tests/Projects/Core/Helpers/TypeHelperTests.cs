@@ -1,10 +1,9 @@
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pilcrow.Core.Helpers;
 using Pilcrow.Tests.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Pilcrow.Tests.Projects.Core.Helpers
 {
@@ -15,7 +14,7 @@ namespace Pilcrow.Tests.Projects.Core.Helpers
     internal class E : C {}
     
     [TestClass]
-    public class TypeHelperTests : Test
+    public class TypeHelperTests
     {
         [TestMethod]
         public void GetSubClassTypesTest()

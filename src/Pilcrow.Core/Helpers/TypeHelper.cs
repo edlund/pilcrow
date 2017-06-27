@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +5,7 @@ using System.Reflection;
 
 namespace Pilcrow.Core.Helpers
 {
-    public abstract class TypeHelper
+    public static class TypeHelper
     {
         public static IEnumerable<Type> GetSubClassTypes(Type parent)
         {

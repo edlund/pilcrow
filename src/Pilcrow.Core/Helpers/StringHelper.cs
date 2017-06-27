@@ -1,4 +1,3 @@
-
 using System;
 using System.Globalization;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Pilcrow.Core.Helpers
 {
-    public class StringHelper
+    public static class StringHelper
     {
         public static string Slugify(string value)
         {

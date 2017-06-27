@@ -1,13 +1,11 @@
-
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Pilcrow.Core.Helpers;
-using Pilcrow.Db.Helpers;
 using Pilcrow.Db.Models;
 using Pilcrow.Db.Repositories.Exceptions;
+using Pilcrow.Db.Repositories.Results;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Pilcrow.Db.Repositories
 {
@@ -18,10 +16,6 @@ namespace Pilcrow.Db.Repositories
         protected Repository(IContext context)
         {
             Context = context;
-        }
-        
-        public static void SetupDependencyInjection()
-        {
         }
     }
     
@@ -75,6 +69,8 @@ namespace Pilcrow.Db.Repositories
         {
             if (!string.IsNullOrEmpty(entity.Id))
                 throw new IdIsNotNullOrEmptyException(entity.Id);
+            if (entity.ModificationTime == DateTime.MinValue)
+                entity.ModificationTime = DateTime.Now;
             Collection.InsertOne(entity);
         }
         
@@ -113,6 +109,17 @@ namespace Pilcrow.Db.Repositories
         
         public IFindOneResult<TModel> FindOne(string id, bool throwOnError = true)
         {
+            try
+            {
+                if (!ValidateObjectId(id))
+                    throw new InvalidIdException(id);
+            }
+            catch (Exception error)
+            {
+                if (throwOnError)
+                    throw;
+                return new FindOneResult<TModel>(error);
+            }
             return FindOne(entity => entity.Id == id, throwOnError);
         }
         
@@ -123,9 +130,13 @@ namespace Pilcrow.Db.Repositories
             try
             {
                 var fluentObjects = Collection.Find(filter);
-                if (fluentObjects.Count() != 1)
+                var foundObjects = fluentObjects.Count();
+                if (foundObjects > 1)
                     throw new ManyFoundException(typeof(TModel), filter.ToString());
-                return new FindOneResult<TModel>(fluentObjects.Single());
+                return new FindOneResult<TModel>(foundObjects == 1
+                    ? fluentObjects.Single()
+                    : null
+                );
             }
             catch (Exception error)
             {
