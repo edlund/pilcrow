@@ -1,8 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pilcrow.Core.Helpers;
-using Pilcrow.Tests.Core;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Pilcrow.Tests.Projects.Core.Helpers
