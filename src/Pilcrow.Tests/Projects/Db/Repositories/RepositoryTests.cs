@@ -18,6 +18,11 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         public string Name { get; set; }
         
         public int Age { get; set; }
+        
+        public override string ToString()
+        {
+            return $"{Name} - {Age}";
+        }
     }
     
     public abstract class Vertebrate : Animal
@@ -97,6 +102,11 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
                 .RuleFor(dog => dog.Type, f => f.PickRandom<Dog.Types>());
         }
         
+        private List<Animal> MakeAnimals(Func<Animal> maker, int min, int max)
+        {
+            return RepositoryHelper.CreateObjects(min, max, _animalRepository, maker);
+        }
+        
         [TestMethod]
         public void CreateTest()
         {
@@ -137,48 +147,72 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         [TestMethod]
         public void FindOneTest()
         {
-            var dogs = RepositoryHelper.CreateObjects(4, _random.Next(8, 32), _animalRepository, MakeDog);
+            var dogs = MakeAnimals(MakeDog, 8, 32);
             var dog = _faker.PickRandom(dogs);
             
             var nameStart = dog.Name.Substring(0, _random.Next(1, dog.Name.Length));
-            var findOneDogResult = _animalRepository.FindOne(
+            var findOneResult = _animalRepository.FindOne(
                 x => x.Name.StartsWith(nameStart) && x.Age == dog.Age
             );
-            Assert.IsNotNull(findOneDogResult.Object);
-            Assert.IsInstanceOfType(findOneDogResult.Object, typeof(Dog));
-            Assert.AreEqual(dog.Id, findOneDogResult.Object.Id);
+            Assert.IsNotNull(findOneResult.Object);
+            Assert.IsInstanceOfType(findOneResult.Object, typeof(Dog));
+            Assert.AreEqual(dog.Id, findOneResult.Object.Id);
         }
         
         [TestMethod]
         public void FindManyTest()
         {
-            var cats = RepositoryHelper.CreateObjects(2, _random.Next(4, 8), _animalRepository, MakeCat);
-            var dogs = RepositoryHelper.CreateObjects(2, _random.Next(4, 8), _animalRepository, MakeDog);
+            var cats = MakeAnimals(MakeCat, 4, 8);
+            var dogs = MakeAnimals(MakeDog, 4, 8);
             
-            var findManyCatsResult = _animalRepository.FindMany(x => x is Cat);
-            Assert.IsTrue(findManyCatsResult.Success);
-            Assert.IsTrue(findManyCatsResult.Objects.All(x => x is Cat));
-            Assert.AreEqual(cats.Count, findManyCatsResult.Count());
+            var findManyResult = _animalRepository.FindMany(x => x is Cat);
+            Assert.IsTrue(findManyResult.Success);
+            Assert.IsTrue(findManyResult.Objects.All(x => x is Cat));
+            Assert.AreEqual(cats.Count, findManyResult.Count());
         }
         
         [TestMethod]
         public void FindManySkipTest()
         {
+            MakeAnimals(MakeDog, 8, 8);
+            var findManyDogsResult = _animalRepository.FindMany(x => true);
+            var linqSkip = findManyDogsResult.Objects.Skip(4);
+            var dbSkip = findManyDogsResult.Skip(4).Objects;
+            Assert.IsTrue(linqSkip.SequenceEqual(dbSkip));
         }
         
         [TestMethod]
         public void FindManyTakeTest()
         {
+            MakeAnimals(MakeDog, 8, 8);
+            var findManyDogsResult = _animalRepository.FindMany(x => true);
+            var linqTake = findManyDogsResult.Objects.Take(4);
+            var dbTake = findManyDogsResult.Take(4).Objects;
+            Assert.IsTrue(linqTake.SequenceEqual(dbTake));
         }
         
         [TestMethod]
         public void FindManySortByAscendingTest()
         {
+            var sortedCats = MakeAnimals(MakeCat, 32, 64).OrderBy(x => x.Age);
+            var dbSortedCats = _animalRepository
+                .FindMany(x => true)
+                .SortByAscending(x => x.Age)
+                .Objects;
+            
+            Assert.IsTrue(sortedCats.SequenceEqual(dbSortedCats));
         }
         
         [TestMethod]
         public void FindManySortByDescendingTest()
         {
+            var sortedCats = MakeAnimals(MakeCat, 32, 64).OrderByDescending(x => x.Age);
+            var dbSortedCats = _animalRepository
+                .FindMany(x => true)
+                .SortByDescending(x => x.Age)
+                .Objects;
+            
+            Assert.IsTrue(sortedCats.SequenceEqual(dbSortedCats));
         }
     }
 }

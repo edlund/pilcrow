@@ -13,7 +13,12 @@ namespace Pilcrow.Db.Models
     /// <summary>
     /// Base class for Database Models.
     /// </summary>
-    public abstract class Entity : IEntity
+    /// <remarks>
+    /// Observe that two Entities are considered equal if they
+    /// have the same ObjectId. This might not always be what
+    /// is expected, so keep that in mind.
+    /// </remarks>
+    public abstract class Entity : IEntity, IEquatable<Entity>
     {
         public static bool ClassMapsRegistered { get; private set; } = false;
         
@@ -66,6 +71,36 @@ namespace Pilcrow.Db.Models
             classMaps.ForEach(classMap => classMap.Freeze());
             
             ClassMapsRegistered = true;
+        }
+        
+        public static bool operator==(Entity a, Entity b)
+        {
+            return Object.ReferenceEquals(a, b) || a?.Id == b?.Id;
+        }
+        
+        public static bool operator!=(Entity a, Entity b)
+        {
+            return !(a == b);
+        }
+        
+        public override int GetHashCode()
+        {
+            return string.IsNullOrEmpty(Id) ? 0 : ObjectId.GetHashCode();
+        }
+        
+        public override bool Equals(object other)
+        {
+            return this == other as Entity;
+        }
+        
+        public bool Equals(Entity other)
+        {
+            return this == other;
+        }
+        
+        public override string ToString()
+        {
+            return $"Entity \"{GetType().FullName}\" with Id=\"{Id}\"";
         }
     }
 }

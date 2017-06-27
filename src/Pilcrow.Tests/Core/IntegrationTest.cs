@@ -54,6 +54,7 @@ namespace Pilcrow.Tests.Core
         {
             CleanupTestMethod();
             DbContext.DropDatabase(TestDatabaseName);
+            DbContext = null;
             Client = null;
             Server = null;
         }
