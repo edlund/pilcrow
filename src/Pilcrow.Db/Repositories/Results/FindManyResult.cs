@@ -16,7 +16,7 @@ namespace Pilcrow.Db.Repositories.Results
         public FindManyResult() : base(null)
         {}
         
-        public FindManyResult(Exception error) : base(error)
+        public FindManyResult(Exception exception) : base(exception)
         {
             FluentObjects = null;
         }

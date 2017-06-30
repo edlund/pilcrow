@@ -9,7 +9,7 @@ namespace Pilcrow.Db.Repositories.Results
         public CreateResult() : base(null)
         {}
         
-        public CreateResult(Exception error) : base(error)
+        public CreateResult(Exception exception) : base(exception)
         {}
     }
 }

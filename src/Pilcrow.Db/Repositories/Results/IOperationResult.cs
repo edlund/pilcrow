@@ -6,7 +6,7 @@ namespace Pilcrow.Db.Repositories.Results
     public interface IOperationResult<TModel>
         where TModel : class, IEntity
     {
-        Exception Error { get; set; }
+        Exception Exception { get; set; }
         
         Type ExceptionType { get; }
         

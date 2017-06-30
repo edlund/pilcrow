@@ -6,17 +6,17 @@ namespace Pilcrow.Db.Repositories.Results
     public abstract class OperationResult<TModel> : IOperationResult<TModel>
         where TModel : class, IEntity
     {
-        public Exception Error { get; set; }
+        public Exception Exception { get; set; }
         
-        public Type ExceptionType => Error.GetType();
+        public Type ExceptionType => Exception.GetType();
         
         public Type ModelType => typeof(TModel);
         
-        public bool Success => Error == null;
+        public bool Success => Exception == null;
         
-        public OperationResult(Exception error)
+        public OperationResult(Exception exception)
         {
-            Error = error;
+            Exception = exception;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Pilcrow.Db.Repositories.Results
         public DeleteResult() : base(null)
         {}
         
-        public DeleteResult(Exception error) : base(error)
+        public DeleteResult(Exception exception) : base(exception)
         {}
     }
 }

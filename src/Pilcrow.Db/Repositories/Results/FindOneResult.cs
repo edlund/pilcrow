@@ -11,7 +11,7 @@ namespace Pilcrow.Db.Repositories.Results
         public FindOneResult() : base(null)
         {}
         
-        public FindOneResult(Exception error) : base(error)
+        public FindOneResult(Exception exception) : base(exception)
         {
             Object = null;
         }
