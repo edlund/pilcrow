@@ -155,6 +155,20 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         }
         
         [TestMethod]
+        public void FindOnePolymorphicTest()
+        {
+            var dog = MakeDog();
+            _animalRepository.Create(dog);
+            
+            var findOneResult = _animalRepository.FindOne(
+                x => ((Dog)x).Type == dog.Type
+            );
+            Assert.IsNotNull(findOneResult.Object);
+            Assert.IsInstanceOfType(findOneResult.Object, typeof(Dog));
+            Assert.AreEqual(dog.Id, findOneResult.Object.Id);
+        }
+        
+        [TestMethod]
         public void FindManyTest()
         {
             var cats = MakeAnimals(MakeCat, 4, 8);
