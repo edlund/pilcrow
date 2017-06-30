@@ -40,7 +40,7 @@ namespace Pilcrow.Db.Repositories
             }
             catch (Exception error)
             {
-                result.Error = error;
+                result.Exception = error;
             }
         }
         
@@ -56,7 +56,7 @@ namespace Pilcrow.Db.Repositories
         
         public string CollectionName(Type type)
         {
-            return $"{type.Namespace}.{type.Name}".Replace('.', '_').ToLower();
+            return $"{type.FullName}".Replace('.', '_').ToLower();
         }
         
         public bool ValidateObjectId(string value)
