@@ -7,18 +7,21 @@ namespace Pilcrow.Core.Helpers
 {
     public static class TypeHelper
     {
-        public static IEnumerable<Type> GetSubClassTypes(Type parent)
+        public static IEnumerable<Type> GetAllTypes()
         {
             var types = new List<Type>();
             var assemblies = AssemblyHelper.GetRuntimeAssemblies();
-            foreach (var assembly in assemblies) {
-                types.AddRange(
-                    from type in assembly.GetTypes()
-                    where type.GetTypeInfo().IsSubclassOf(parent)
-                    select type
-                );
-            }
+            foreach (var assembly in assemblies)
+                types.AddRange(assembly.GetTypes());
             return types.OrderBy(type => type.Name);
+        }
+        
+        public static IEnumerable<Type> GetSubClassTypes(Type parent)
+        {
+            return from type in GetAllTypes()
+                where type.GetTypeInfo().IsSubclassOf(parent)
+                select type
+            ;
         }
         
         public static IEnumerable<Type> GetDirectSubClassTypes(Type parent)
@@ -42,6 +45,16 @@ namespace Pilcrow.Core.Helpers
                     otherType
                 ) => leafType && !otherType.GetTypeInfo().IsSubclassOf(currentType))
                 select currentType
+            ;
+        }
+        
+        public static IEnumerable<Type> GetImplementingTypes(Type itype)
+        {
+            if (!itype.GetTypeInfo().IsInterface)
+                throw new InvalidOperationException($"\"{itype.FullName}\" is not an interface");
+            return from type in GetAllTypes()
+                where type.GetTypeInfo().GetInterfaces().Contains(itype)
+                select type
             ;
         }
     }

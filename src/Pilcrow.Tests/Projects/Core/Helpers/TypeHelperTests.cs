@@ -13,6 +13,12 @@ namespace Pilcrow.Tests.Projects.Core.Helpers
     internal class D : C {}
     internal class E : C {}
     
+    internal interface IF {}
+    internal class F : IF {}
+    internal class G : F {}
+    internal class H : F {}
+    internal class I : IF {}
+    
     [TestClass]
     public class TypeHelperTests
     {
@@ -52,6 +58,18 @@ namespace Pilcrow.Tests.Projects.Core.Helpers
                 typeof(D),
                 typeof(E),
             }.SequenceEqual(TypeHelper.GetLeafSubClassTypes(typeof(A))));
+        }
+        
+        [TestMethod]
+        public void GetImplementingTypesTest()
+        {
+            Assert.IsTrue(new List<Type>
+            {
+                typeof(F),
+                typeof(G),
+                typeof(H),
+                typeof(I)
+            }.SequenceEqual(TypeHelper.GetImplementingTypes(typeof(IF))));
         }
     }
 }
