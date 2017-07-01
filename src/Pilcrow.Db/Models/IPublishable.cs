@@ -3,6 +3,8 @@ namespace Pilcrow.Db.Models
 {
     public interface IPublishable
     {
-        bool Draft { get; set; }
+        string Uuid { get; set; }
+        
+        bool Live { get; set; }
     }
 }

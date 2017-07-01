@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Pilcrow.Tests.Helpers
+namespace Pilcrow.Tests.Helpers.Db
 {
     public static class RepositoryHelper
     {

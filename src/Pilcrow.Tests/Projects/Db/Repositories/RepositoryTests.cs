@@ -6,7 +6,7 @@ using Pilcrow.Db.Models;
 using Pilcrow.Db.Repositories;
 using Pilcrow.Mvc;
 using Pilcrow.Tests.Core;
-using Pilcrow.Tests.Helpers;
+using Pilcrow.Tests.Helpers.Db;
 using System;
 using System.Collections.Generic;
 using System.Linq;

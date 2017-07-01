@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using Pilcrow.Db;
 using Pilcrow.Db.Models;
 using Pilcrow.Db.Repositories;
+using Pilcrow.Db.Repositories.Cms;
+using Pilcrow.Services;
 
 namespace Pilcrow.Mvc
 {
@@ -25,7 +27,7 @@ namespace Pilcrow.Mvc
             Entity.RegisterClassMaps();
         }
         
-        public void ConfigureServices(IServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
             
@@ -37,9 +39,13 @@ namespace Pilcrow.Mvc
             
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddSingleton<IContext>(context);
+            
+            services.AddScoped<IPageRepository, PageRepository>();
+            
+            services.AddScoped<IPageService, PageService>();
         }
         
-        public void Configure(
+        public virtual void Configure(
             IApplicationBuilder applicationBuilder,
             IHostingEnvironment hostingEnvironment,
             ILoggerFactory loggerFactory
