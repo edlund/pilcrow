@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Bogus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,9 +11,6 @@ using Pilcrow.Db.Repositories;
 using Pilcrow.Mvc;
 using Pilcrow.Tests.Core;
 using Pilcrow.Tests.Helpers.Db;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Pilcrow.Tests.Projects.Db.Repositories
 {

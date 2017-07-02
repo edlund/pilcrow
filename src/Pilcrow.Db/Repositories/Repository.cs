@@ -1,11 +1,12 @@
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Pilcrow.Db.Models;
 using Pilcrow.Db.Repositories.Exceptions;
 using Pilcrow.Db.Repositories.Results;
-using System;
-using System.Linq;
-using System.Linq.Expressions;
 
 namespace Pilcrow.Db.Repositories
 {

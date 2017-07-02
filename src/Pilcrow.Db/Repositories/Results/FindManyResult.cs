@@ -1,8 +1,9 @@
-using MongoDB.Driver;
-using Pilcrow.Db.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+
+using MongoDB.Driver;
+using Pilcrow.Db.Models;
 
 namespace Pilcrow.Db.Repositories.Results
 {

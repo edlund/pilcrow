@@ -1,6 +1,7 @@
+using System.Linq;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pilcrow.Core.Helpers;
-using System.Linq;
 
 namespace Pilcrow.Tests.Projects.Core.Helpers
 {

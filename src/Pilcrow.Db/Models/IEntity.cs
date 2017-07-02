@@ -1,5 +1,6 @@
-using MongoDB.Bson;
 using System;
+
+using MongoDB.Bson;
 
 namespace Pilcrow.Db.Models
 {

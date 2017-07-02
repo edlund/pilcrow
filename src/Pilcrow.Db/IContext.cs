@@ -1,4 +1,3 @@
-
 using MongoDB.Driver;
 
 namespace Pilcrow.Db

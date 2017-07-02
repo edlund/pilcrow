@@ -1,5 +1,7 @@
-using Pilcrow.Db.Models;
 using System;
+
+using Pilcrow.Db.Models;
+
 
 namespace Pilcrow.Db.Repositories.Results
 {

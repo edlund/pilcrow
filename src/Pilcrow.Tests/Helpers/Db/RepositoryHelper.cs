@@ -1,9 +1,10 @@
-using Pilcrow.Db.Models;
-using Pilcrow.Db.Repositories;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
+using Pilcrow.Db.Models;
+using Pilcrow.Db.Repositories;
 
 namespace Pilcrow.Tests.Helpers.Db
 {

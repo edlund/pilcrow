@@ -1,8 +1,9 @@
-using Pilcrow.Db.Models;
-using Pilcrow.Db.Repositories.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+
+using Pilcrow.Db.Models;
+using Pilcrow.Db.Repositories.Results;
 
 namespace Pilcrow.Db.Repositories
 {

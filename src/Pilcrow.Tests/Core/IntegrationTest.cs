@@ -1,13 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pilcrow.Db;
 using Pilcrow.Mvc;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
 
 namespace Pilcrow.Tests.Core
 {
