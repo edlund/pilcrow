@@ -32,8 +32,8 @@ namespace Pilcrow.Db.Repositories
         private void ExecuteOperation(
             Action<TModel> operation,
             TModel entity,
-            IOperationResult<TModel> result
-        ) {
+            IOperationResult<TModel> result)
+        {
             try
             {
                 operation(entity);
@@ -125,8 +125,8 @@ namespace Pilcrow.Db.Repositories
         
         public IFindOneResult<TModel> FindOne(
             Expression<Func<TModel, bool>> filter,
-            bool throwOnError = true
-        ) {
+            bool throwOnError = true)
+        {
             try
             {
                 var fluentObjects = Collection.Find(filter);
@@ -148,8 +148,8 @@ namespace Pilcrow.Db.Repositories
         
         public IFindManyResult<TModel> FindMany(
             Expression<Func<TModel, bool>> filter,
-            bool throwOnError = true
-        ) {
+            bool throwOnError = true)
+        {
             try
             {
                 return new FindManyResult<TModel>(Collection.Find(filter));

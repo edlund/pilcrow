@@ -48,8 +48,8 @@ namespace Pilcrow.Mvc
         public virtual void Configure(
             IApplicationBuilder applicationBuilder,
             IHostingEnvironment hostingEnvironment,
-            ILoggerFactory loggerFactory
-        ) {
+            ILoggerFactory loggerFactory)
+        {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             
