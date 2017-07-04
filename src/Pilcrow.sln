@@ -7,13 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Core", "Pilcrow.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Db", "Pilcrow.Db\Pilcrow.Db.csproj", "{4952879E-A819-4EBA-9358-8090B67CE3ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Interfaces", "Pilcrow.Interfaces\Pilcrow.Interfaces.csproj", "{749ACA55-AE86-4800-B719-0F35234E99FA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Mvc", "Pilcrow.Mvc\Pilcrow.Mvc.csproj", "{7691F4E5-25D7-48D9-AD5D-C2AD84F3E2CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Services", "Pilcrow.Services\Pilcrow.Services.csproj", "{BD5FA762-4C0A-409C-9BBB-5C7C00719894}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.Tests", "Pilcrow.Tests\Pilcrow.Tests.csproj", "{B2551EC6-55AB-4115-9DA4-90EF4FA8A5CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pilcrow.UserInterfaces", "Pilcrow.UserInterfaces\Pilcrow.UserInterfaces.csproj", "{749ACA55-AE86-4800-B719-0F35234E99FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

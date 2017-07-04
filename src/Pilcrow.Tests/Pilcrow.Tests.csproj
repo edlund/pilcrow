@@ -13,8 +13,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Pilcrow.Core\Pilcrow.Core.csproj" />
     <ProjectReference Include="..\Pilcrow.Db\Pilcrow.Db.csproj" />
-    <ProjectReference Include="..\Pilcrow.Interfaces\Pilcrow.Interfaces.csproj" />
     <ProjectReference Include="..\Pilcrow.Mvc\Pilcrow.Mvc.csproj" />
     <ProjectReference Include="..\Pilcrow.Services\Pilcrow.Services.csproj" />
+    <ProjectReference Include="..\Pilcrow.UserInterfaces\Pilcrow.UserInterfaces.csproj" />
   </ItemGroup>
 </Project>
