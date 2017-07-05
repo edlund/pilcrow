@@ -83,6 +83,7 @@ namespace Pilcrow.Db.Repositories
         public void Update(TModel entity)
         {
             RequireExistingObject(entity);
+            entity.ModificationTime = DateTime.Now;
             var filter = Builders<TModel>.Filter.Eq("_id", entity.ObjectId);
             var result = Collection.ReplaceOne(filter, entity);
             if (result.ModifiedCount != 1)
