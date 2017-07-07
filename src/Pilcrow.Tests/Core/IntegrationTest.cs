@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Pilcrow.Db;
+using Pilcrow.Db.Models.Globalization;
 using Pilcrow.Mvc;
 
 namespace Pilcrow.Tests.Core
@@ -47,6 +49,8 @@ namespace Pilcrow.Tests.Core
             Server = new TestServer(webHostBuilder);
             Client = Server.CreateClient();
             DbContext = Server.Host.Services.GetService<IContext>();
+            Translatable.CurrentCulture = new CultureInfo("en-US");
+            Translatable.FallbackCulture = new CultureInfo("en-US");
             InitializeTestMethod();
         }
         
