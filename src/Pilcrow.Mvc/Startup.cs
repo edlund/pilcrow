@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Pilcrow.Core.Helpers;
 using Pilcrow.Db;
 using Pilcrow.Db.Models;
 using Pilcrow.Db.Repositories;
@@ -15,6 +20,8 @@ namespace Pilcrow.Mvc
     {
         public IConfigurationRoot Configuration { get; }
         
+        public List<IStartable> Startables { get; }
+        
         public Startup(IHostingEnvironment hostingEnvironment)
         {
             var configurationBuilder = new ConfigurationBuilder()
@@ -23,6 +30,10 @@ namespace Pilcrow.Mvc
                 .AddJsonFile($"appsettings.{hostingEnvironment.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = configurationBuilder.Build();
+            Startables = (
+                from startable in TypeHelper.GetImplementingTypes(typeof(IStartable))
+                select (IStartable)Activator.CreateInstance(startable)
+            ).ToList();
             
             Entity.RegisterClassMaps();
         }
@@ -43,6 +54,8 @@ namespace Pilcrow.Mvc
             services.AddScoped<IPageRepository, PageRepository>();
             
             services.AddScoped<IPageService, PageService>();
+            
+            Startables.ForEach(x => x.ConfigureServices(Configuration, services));
         }
         
         public virtual void Configure(
@@ -68,6 +81,13 @@ namespace Pilcrow.Mvc
                     template: "{controller=Home}/{action=Index}/{id?}"
                 );
             });
+            
+            Startables.ForEach(x => x.Configure(
+                Configuration,
+                applicationBuilder,
+                hostingEnvironment,
+                loggerFactory
+            ));
         }
     }
 }

@@ -15,10 +15,12 @@ namespace Pilcrow.Tests.Projects.Core.Helpers
     internal class E : C {}
     
     internal interface IF {}
+    internal interface IJ : IF {}
     internal class F : IF {}
     internal class G : F {}
     internal class H : F {}
     internal class I : IF {}
+    internal class J : IJ {}
     
     [TestClass]
     public class TypeHelperTests
@@ -69,7 +71,8 @@ namespace Pilcrow.Tests.Projects.Core.Helpers
                 typeof(F),
                 typeof(G),
                 typeof(H),
-                typeof(I)
+                typeof(I),
+                typeof(J)
             }.SequenceEqual(TypeHelper.GetImplementingTypes(typeof(IF))));
         }
     }

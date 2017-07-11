@@ -53,7 +53,9 @@ namespace Pilcrow.Core.Helpers
             if (!itype.GetTypeInfo().IsInterface)
                 throw new InvalidOperationException($"\"{itype.FullName}\" is not an interface");
             return from type in GetAllTypes()
-                where type.GetTypeInfo().GetInterfaces().Contains(itype)
+                let typeInfo = type.GetTypeInfo()
+                where typeInfo.GetInterfaces().Contains(itype)
+                where !typeInfo.IsInterface
                 select type
             ;
         }
