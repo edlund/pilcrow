@@ -200,17 +200,18 @@ namespace Pilcrow.Db.Models.Globalization
         {
             get
             {
+                T value;
                 if (Regex.IsMatch(key, CultureRegex))
                 {
-                    T value;
                     if (TryGetValue(new CultureInfo(key), out value))
                         return value;
                     key = key.Split('-')[0];
                 }
                 CultureInfo keyCulture = null;
-                return Translatable.LanguageDefaults.TryGetValue(key, out keyCulture)
-                    ? this[keyCulture]
-                    : this[new CultureInfo(key)];
+                if (!Translatable.LanguageDefaults.TryGetValue(key, out keyCulture))
+                    keyCulture = new CultureInfo(key);
+                TryGetValue(keyCulture, out value);
+                return value;
             }
             set
             {
@@ -226,7 +227,7 @@ namespace Pilcrow.Db.Models.Globalization
             {
                 if (ContainsKey(Translatable.CurrentCulture))
                     return this[Translatable.CurrentCulture];
-                T value = default(T);
+                T value;
                 TryGetValue(Translatable.FallbackCulture, out value);
                 return value;
             }

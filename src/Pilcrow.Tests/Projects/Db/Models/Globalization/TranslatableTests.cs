@@ -84,9 +84,20 @@ namespace Pilcrow.Tests.Projects.Db.Models.Globalization
         }
         
         [TestMethod]
+        public void CloseCultureTest()
+        {
+            Hero hero = new Hero();
+            
+            hero.Name["en-US"] = "Frog";
+            
+            Assert.AreEqual("Frog", hero.Name["en-GB"]);
+        }
+        
+        [TestMethod]
         public void RepositoryTest()
         {
             Hero hero = new Hero();
+            
             hero.Name["en-US"] = "Frog";
             hero.Name["ja-JP"] = "カエル";
             hero.Name["sv-SE"] = "Groda";
