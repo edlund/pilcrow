@@ -14,6 +14,8 @@ namespace Pilcrow.Db.Models.Globalization
     /// </summary>
     public class Translatable
     {
+        public const string CultureRegex = @"^[a-z]{2}-[A-Z]{2}$";
+        
         public static LanguageDictionary LanguageDefaults = new LanguageDictionary()
         {
             { "aa", new CultureInfo("aa-ET") },
@@ -189,8 +191,6 @@ namespace Pilcrow.Db.Models.Globalization
     /// </summary>
     public class Translatable<T> : Dictionary<CultureInfo, T>
     {
-        public string CultureRegex => @"^[a-z]{2}-[A-Z]{2}$";
-        
         public static implicit operator T(Translatable<T> translatable)
         {
             return translatable.Value;
@@ -201,7 +201,7 @@ namespace Pilcrow.Db.Models.Globalization
             get
             {
                 T value;
-                if (Regex.IsMatch(key, CultureRegex))
+                if (Regex.IsMatch(key, Translatable.CultureRegex))
                 {
                     if (TryGetValue(new CultureInfo(key), out value))
                         return value;
@@ -215,7 +215,7 @@ namespace Pilcrow.Db.Models.Globalization
             }
             set
             {
-                if (!Regex.IsMatch(key, CultureRegex))
+                if (!Regex.IsMatch(key, Translatable.CultureRegex))
                     throw new InvalidOperationException($"unrecognized Culture \"{key}\"");
                 this[new CultureInfo(key)] = value;
             }
