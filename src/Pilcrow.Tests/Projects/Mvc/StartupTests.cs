@@ -2,6 +2,7 @@ using System;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,8 @@ namespace Pilcrow.Tests.Projects.Mvc
     public class DummyStartup : IStartable
     {
         public static bool ConfigureCalled { get; set; }
+        
+        public static bool ConfigureRoutesCalled { get; set; }
         
         public static bool ConfigureServicesCalled { get; set; }
         
@@ -28,6 +31,19 @@ namespace Pilcrow.Tests.Projects.Mvc
             Assert.IsNotNull(hostingEnvironment);
             Assert.IsNotNull(loggerFactory);
             ConfigureCalled = true;
+        }
+        
+        public void ConfigureRoutes(
+            IConfigurationRoot configuration,
+            IApplicationBuilder applicationBuilder,
+            IHostingEnvironment hostingEnvironment,
+            IRouteBuilder routeBuilder)
+        {
+            Assert.IsNotNull(configuration);
+            Assert.IsNotNull(applicationBuilder);
+            Assert.IsNotNull(hostingEnvironment);
+            Assert.IsNotNull(routeBuilder);
+            ConfigureRoutesCalled = true;
         }
         
         public void ConfigureServices(
@@ -47,6 +63,7 @@ namespace Pilcrow.Tests.Projects.Mvc
         public new void TestInitialize()
         {
             DummyStartup.ConfigureCalled = false;
+            DummyStartup.ConfigureRoutesCalled = false;
             DummyStartup.ConfigureServicesCalled = false;
             base.TestInitialize();
         }
@@ -55,6 +72,7 @@ namespace Pilcrow.Tests.Projects.Mvc
         public void CallbackTest()
         {
             Assert.IsTrue(DummyStartup.ConfigureCalled);
+            Assert.IsTrue(DummyStartup.ConfigureRoutesCalled);
             Assert.IsTrue(DummyStartup.ConfigureServicesCalled);
         }
     }

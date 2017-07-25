@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,5 +23,11 @@ namespace Pilcrow.Mvc
             IApplicationBuilder applicationBuilder,
             IHostingEnvironment hostingEnvironment,
             ILoggerFactory loggerFactory);
+        
+        void ConfigureRoutes(
+            IConfigurationRoot configuration,
+            IApplicationBuilder applicationBuilder,
+            IHostingEnvironment hostingEnvironment,
+            IRouteBuilder routeBuilder);
     }
 }

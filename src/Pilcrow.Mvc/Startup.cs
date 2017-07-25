@@ -4,12 +4,14 @@ using System.Linq;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pilcrow.Core.Helpers;
 using Pilcrow.Db;
 using Pilcrow.Db.Models;
+using Pilcrow.Db.Models.Globalization;
 using Pilcrow.Db.Repositories;
 using Pilcrow.Db.Repositories.Cms;
 using Pilcrow.Services;
@@ -74,11 +76,29 @@ namespace Pilcrow.Mvc
             }
             
             applicationBuilder.UseStaticFiles();
-            applicationBuilder.UseMvc(routes =>
+            applicationBuilder.UseMvc(routeBuilder =>
             {
-                routes.MapRoute(
-                    name: "default",
+                Startables.ForEach(x => x.ConfigureRoutes(
+                    Configuration,
+                    applicationBuilder,
+                    hostingEnvironment,
+                    routeBuilder
+                ));
+                
+                routeBuilder.MapRoute(
+                    name: "*Controller",
                     template: "{controller=Home}/{action=Index}/{id?}"
+                );
+                routeBuilder.MapRoute(
+                    name: "PathController",
+                    template: "{culture}/{*path}",
+                    defaults: new {
+                        controller = "Path",
+                        action = "View"
+                    },
+                    constraints: new {
+                        culture = new RegexRouteConstraint(Translatable.CultureRegex)
+                    }
                 );
             });
             
