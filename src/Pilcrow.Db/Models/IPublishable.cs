@@ -1,9 +1,10 @@
+using System;
 
 namespace Pilcrow.Db.Models
 {
     public interface IPublishable
     {
-        string Uuid { get; set; }
+        Guid Guid { get; set; }
         
         bool Live { get; set; }
     }

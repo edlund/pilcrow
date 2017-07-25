@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using MongoDB.Bson;
@@ -8,10 +9,9 @@ namespace Pilcrow.Db.Models.Cms
 {
     public class Page : Entity, IAutoMappable, IPublishable, IRevisionable
     {
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string ParentId { get; set; }
+        public Guid Guid { get; set; } = Guid.NewGuid();
         
-        public string Uuid { get; set; }
+        public Guid ParentGuid { get; set; }
         
         public bool Live { get; set; }
         
