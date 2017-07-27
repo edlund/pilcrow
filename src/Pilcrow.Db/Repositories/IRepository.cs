@@ -18,17 +18,29 @@ namespace Pilcrow.Db.Repositories
         
         bool ValidateObjectId(string value);
         
-        void Create(TModel entity);
+        void CreateOne(TModel entity);
         
-        void Create(TModel entity, ICreateResult<TModel> result);
+        void CreateOne(TModel entity, ICreateOneResult<TModel> result);
         
-        void Update(TModel entity);
+        void CreateMany(IEnumerable<TModel> entities);
         
-        void Update(TModel entity, IUpdateResult<TModel> result);
+        void CreateMany(IEnumerable<TModel> entities, ICreateManyResult<TModel> result);
         
-        void Delete(TModel entity);
+        void UpdateOne(TModel entity);
         
-        void Delete(TModel entity, IDeleteResult<TModel> result);
+        void UpdateOne(TModel entity, IUpdateOneResult<TModel> result);
+        
+        void UpdateMany(IEnumerable<TModel> entities);
+        
+        void UpdateMany(IEnumerable<TModel> entities, ICreateManyResult<TModel> result);
+        
+        void DeleteOne(TModel entity);
+        
+        void DeleteOne(TModel entity, IDeleteOneResult<TModel> result);
+        
+        void DeleteMany(IEnumerable<TModel> entities);
+        
+        void DeleteMany(IEnumerable<TModel> entities, ICreateManyResult<TModel> result);
         
         IFindOneResult<TModel> FindOne(string id, bool throwOnError = true);
         

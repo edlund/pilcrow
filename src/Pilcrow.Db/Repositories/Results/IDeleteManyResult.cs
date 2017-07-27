@@ -2,7 +2,7 @@ using Pilcrow.Db.Models;
 
 namespace Pilcrow.Db.Repositories.Results
 {
-    public interface ICreateResult<TModel>: IOperationResult<TModel>
+    public interface IDeleteManyResult<TModel>: IOperationResult<TModel>
         where TModel : class, IEntity
     {
     }

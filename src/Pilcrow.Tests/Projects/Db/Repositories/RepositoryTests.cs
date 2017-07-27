@@ -104,23 +104,23 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         }
         
         [TestMethod]
-        public void CreateTest()
+        public void CreateOneTest()
         {
             var dog = MakeDog();
-            _animalRepository.Create(dog);
+            _animalRepository.CreateOne(dog);
             Assert.IsTrue(_animalRepository.ValidateObjectId(dog.Id));
             Assert.IsTrue(dog.ModificationTime > DateTime.MinValue);
         }
         
         [TestMethod]
-        public void UpdateTest()
+        public void UpdateOneTest()
         {
             var dog = MakeDog();
-            _animalRepository.Create(dog);
+            _animalRepository.CreateOne(dog);
             
             dog.Age = 8;
             dog.Type = Dog.Types.ServiceDog;
-            _animalRepository.Update(dog);
+            _animalRepository.UpdateOne(dog);
             
             var findOneResult = _animalRepository.FindOne(dog.Id);
             Assert.IsTrue(findOneResult.Success);
@@ -132,11 +132,11 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         }
         
         [TestMethod]
-        public void DeleteTest()
+        public void DeleteOneTest()
         {
             var dog = MakeDog();
-            _animalRepository.Create(dog);
-            _animalRepository.Delete(dog);
+            _animalRepository.CreateOne(dog);
+            _animalRepository.DeleteOne(dog);
             Assert.IsNull(_animalRepository.FindOne(dog.Id).Object);
         }
         
@@ -159,7 +159,7 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         public void FindOnePolymorphicTest()
         {
             var dog = MakeDog();
-            _animalRepository.Create(dog);
+            _animalRepository.CreateOne(dog);
             
             var findOneResult = _animalRepository.FindOne(
                 x => ((Dog)x).Type == dog.Type

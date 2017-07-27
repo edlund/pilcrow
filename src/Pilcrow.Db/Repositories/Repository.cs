@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -30,7 +31,7 @@ namespace Pilcrow.Db.Repositories
             Collection = Context.Database.GetCollection<TModel>(CollectionName(typeof(TModel)));
         }
         
-        private void ExecuteOperation(
+        private void ExecuteOneOperation(
             Action<TModel> operation,
             TModel entity,
             IOperationResult<TModel> result)
@@ -43,6 +44,29 @@ namespace Pilcrow.Db.Repositories
             {
                 result.Exception = error;
             }
+        }
+        
+        private void ExecuteManyOperation(
+            Action<IEnumerable<TModel>> operation,
+            IEnumerable<TModel> entities,
+            IOperationResult<TModel> result)
+        {
+            try
+            {
+                operation(entities);
+            }
+            catch (Exception error)
+            {
+                result.Exception = error;
+            }
+        }
+        
+        private void RequireNewObject(TModel entity)
+        {
+            if (!string.IsNullOrEmpty(entity.Id))
+                throw new IdIsNotNullOrEmptyException(entity.Id);
+            if (entity.ModificationTime == DateTime.MinValue)
+                entity.ModificationTime = DateTime.Now;
         }
         
         private void RequireExistingObject(TModel entity)
@@ -66,21 +90,29 @@ namespace Pilcrow.Db.Repositories
             return ObjectId.TryParse(value, out objectId);
         }
         
-        public void Create(TModel entity)
+        public void CreateOne(TModel entity)
         {
-            if (!string.IsNullOrEmpty(entity.Id))
-                throw new IdIsNotNullOrEmptyException(entity.Id);
-            if (entity.ModificationTime == DateTime.MinValue)
-                entity.ModificationTime = DateTime.Now;
+            RequireNewObject(entity);
             Collection.InsertOne(entity);
         }
         
-        public void Create(TModel entity, ICreateResult<TModel> result)
+        public void CreateOne(TModel entity, ICreateOneResult<TModel> result)
         {
-            ExecuteOperation(Create, entity, result);
+            ExecuteOneOperation(CreateOne, entity, result);
         }
         
-        public void Update(TModel entity)
+        public void CreateMany(IEnumerable<TModel> entities)
+        {
+            entities.ToList().ForEach(RequireNewObject);
+            Collection.InsertMany(entities);
+        }
+        
+        public void CreateMany(IEnumerable<TModel> entities, ICreateManyResult<TModel> result)
+        {
+            ExecuteManyOperation(CreateMany, entities, result);
+        }
+        
+        public void UpdateOne(TModel entity)
         {
             RequireExistingObject(entity);
             entity.ModificationTime = DateTime.Now;
@@ -90,12 +122,22 @@ namespace Pilcrow.Db.Repositories
                 throw new UnexpectedResultException(entity.Id, "update");
         }
         
-        public void Update(TModel entity, IUpdateResult<TModel> result)
+        public void UpdateOne(TModel entity, IUpdateOneResult<TModel> result)
         {
-            ExecuteOperation(Update, entity, result);
+            ExecuteOneOperation(UpdateOne, entity, result);
         }
         
-        public void Delete(TModel entity)
+        public void UpdateMany(IEnumerable<TModel> entities)
+        {
+            entities.ToList().ForEach(UpdateOne);
+        }
+        
+        public void UpdateMany(IEnumerable<TModel> entities, ICreateManyResult<TModel> result)
+        {
+            ExecuteManyOperation(UpdateMany, entities, result);
+        }
+        
+        public void DeleteOne(TModel entity)
         {
             RequireExistingObject(entity);
             var filter = Builders<TModel>.Filter.Eq("_id", entity.ObjectId);
@@ -104,9 +146,24 @@ namespace Pilcrow.Db.Repositories
                 throw new UnexpectedResultException(entity.Id, "delete");
         }
         
-        public void Delete(TModel entity, IDeleteResult<TModel> result)
+        public void DeleteOne(TModel entity, IDeleteOneResult<TModel> result)
         {
-            ExecuteOperation(Delete, entity, result);
+            ExecuteOneOperation(DeleteOne, entity, result);
+        }
+        
+        public void DeleteMany(IEnumerable<TModel> entities)
+        {
+            entities.ToList().ForEach(RequireExistingObject);
+            var ids = from entity in entities select entity.ObjectId;
+            var filter = Builders<TModel>.Filter.In("_id", ids);
+            var result = Collection.DeleteMany(filter);
+            if (result.DeletedCount != entities.Count())
+                throw new UnexpectedResultException("all entities could not be deleted");
+        }
+        
+        public void DeleteMany(IEnumerable<TModel> entities, ICreateManyResult<TModel> result)
+        {
+            ExecuteManyOperation(DeleteMany, entities, result);
         }
         
         public IFindOneResult<TModel> FindOne(string id, bool throwOnError = true)

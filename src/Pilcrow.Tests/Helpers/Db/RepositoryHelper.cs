@@ -14,7 +14,7 @@ namespace Pilcrow.Tests.Helpers.Db
             where T : class, IEntity
         {
             var xs = (from _ in Enumerable.Range(min, max) select maker()).ToList();
-            xs.ForEach(x => repository.Create(x));
+            xs.ForEach(x => repository.CreateOne(x));
             return xs;
         }
     }

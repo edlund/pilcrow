@@ -102,7 +102,7 @@ namespace Pilcrow.Tests.Projects.Db.Models.Globalization
             hero.Name["ja-JP"] = "カエル";
             hero.Name["sv-SE"] = "Groda";
             
-            _heroRepository.Create(hero);
+            _heroRepository.CreateOne(hero);
             Assert.IsTrue(_heroRepository.ValidateObjectId(hero.Id));
             
             hero = _heroRepository.FindOne(x => x.Name["en-US"] == "Frog").Object;

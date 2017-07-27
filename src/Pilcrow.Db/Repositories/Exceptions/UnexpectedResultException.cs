@@ -6,6 +6,10 @@ namespace Pilcrow.Db.Repositories.Exceptions
     {
         const string MessageTemplate = "failed to {1} Object with Id \"{0}\"";
         
+        public UnexpectedResultException(string message)
+            : base(message)
+        {}
+        
         public UnexpectedResultException(string id, string operation)
             : base(string.Format(MessageTemplate, id, operation))
         {}
