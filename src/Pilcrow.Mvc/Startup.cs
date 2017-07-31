@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pilcrow.Core.Helpers;
 using Pilcrow.Db;
+using Pilcrow.Db.Migrations;
 using Pilcrow.Db.Models;
 using Pilcrow.Db.Models.Globalization;
 using Pilcrow.Db.Repositories;
@@ -58,6 +59,8 @@ namespace Pilcrow.Mvc
             services.AddScoped<IPageService, PageService>();
             
             Startables.ForEach(x => x.ConfigureServices(Configuration, services));
+            
+            new MigrationRunner(context, Configuration).Execute();
         }
         
         public virtual void Configure(

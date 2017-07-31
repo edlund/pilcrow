@@ -19,6 +19,17 @@ namespace Pilcrow.Db.Repositories
         {
             Context = context;
         }
+        
+        public static string CollectionName(Type type)
+        {
+            return $"{type.FullName}".Replace('.', '_').ToLower();
+        }
+        
+        public static bool ValidateObjectId(string value)
+        {
+            ObjectId objectId;
+            return ObjectId.TryParse(value, out objectId);
+        }
     }
     
     public abstract class Repository<TModel> : Repository, IRepository<TModel>
@@ -79,15 +90,14 @@ namespace Pilcrow.Db.Repositories
                 throw new InvalidIdException(entity.Id);
         }
         
-        public string CollectionName(Type type)
+        public new string CollectionName(Type type)
         {
-            return $"{type.FullName}".Replace('.', '_').ToLower();
+            return Repository.CollectionName(type);
         }
         
-        public bool ValidateObjectId(string value)
+        public new bool ValidateObjectId(string value)
         {
-            ObjectId objectId;
-            return ObjectId.TryParse(value, out objectId);
+            return Repository.ValidateObjectId(value);
         }
         
         public void CreateOne(TModel entity)

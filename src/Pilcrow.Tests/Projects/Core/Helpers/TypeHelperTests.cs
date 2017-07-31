@@ -26,7 +26,7 @@ namespace Pilcrow.Tests.Projects.Core.Helpers
     public class TypeHelperTests
     {
         [TestMethod]
-        public void GetSubClassTypesTest()
+        public void GetSubTypesTest()
         {
             Assert.IsTrue(new List<Type>
             {
@@ -34,33 +34,33 @@ namespace Pilcrow.Tests.Projects.Core.Helpers
                 typeof(C),
                 typeof(D),
                 typeof(E)
-            }.SequenceEqual(TypeHelper.GetSubClassTypes(typeof(A))));
+            }.SequenceEqual(TypeHelper.GetSubTypes(typeof(A))));
         }
         
         [TestMethod]
-        public void GetDirectSubClassTypesTest()
+        public void GetDirectSubTypesTest()
         {
             Assert.IsTrue(new List<Type>
             {
                 typeof(B),
                 typeof(C),
-            }.SequenceEqual(TypeHelper.GetDirectSubClassTypes(typeof(A))));
+            }.SequenceEqual(TypeHelper.GetDirectSubTypes(typeof(A))));
             Assert.IsTrue(new List<Type>
             {
                 typeof(D),
                 typeof(E),
-            }.SequenceEqual(TypeHelper.GetDirectSubClassTypes(typeof(C))));
+            }.SequenceEqual(TypeHelper.GetDirectSubTypes(typeof(C))));
         }
         
         [TestMethod]
-        public void GetLeafSubClassTypesTest()
+        public void GetLeafSubTypesTest()
         {
             Assert.IsTrue(new List<Type>
             {
                 typeof(B),
                 typeof(D),
                 typeof(E),
-            }.SequenceEqual(TypeHelper.GetLeafSubClassTypes(typeof(A))));
+            }.SequenceEqual(TypeHelper.GetLeafSubTypes(typeof(A))));
         }
         
         [TestMethod]

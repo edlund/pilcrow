@@ -55,12 +55,12 @@ namespace Pilcrow.Db.Models
                 .Contains(typeof(IAutoMappable));
             
             var classMaps = new List<BsonClassMap>();
-            var modelTypes = TypeHelper.GetDirectSubClassTypes(typeof(Entity)).Where(autoMappable);
+            var modelTypes = TypeHelper.GetDirectSubTypes(typeof(Entity)).Where(autoMappable);
             
             foreach (var modelType in modelTypes)
             {
                 var classMap = createClassMap(modelType);
-                var modelSubTypes = TypeHelper.GetSubClassTypes(modelType).Where(autoMappable);
+                var modelSubTypes = TypeHelper.GetSubTypes(modelType).Where(autoMappable);
                 foreach (var modelSubType in modelSubTypes)
                 {
                     var subClassMap = createClassMap(modelSubType);

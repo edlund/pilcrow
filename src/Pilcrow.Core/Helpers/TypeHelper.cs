@@ -16,7 +16,7 @@ namespace Pilcrow.Core.Helpers
             return types.OrderBy(type => type.Name);
         }
         
-        public static IEnumerable<Type> GetSubClassTypes(Type parent)
+        public static IEnumerable<Type> GetSubTypes(Type parent)
         {
             return from type in GetAllTypes()
                 where type.GetTypeInfo().IsSubclassOf(parent)
@@ -24,9 +24,9 @@ namespace Pilcrow.Core.Helpers
             ;
         }
         
-        public static IEnumerable<Type> GetDirectSubClassTypes(Type parent)
+        public static IEnumerable<Type> GetDirectSubTypes(Type parent)
         {
-            var allTypes = GetSubClassTypes(parent);
+            var allTypes = GetSubTypes(parent);
             return from currentType in allTypes
                 where allTypes.Aggregate(true, (
                     directType,
@@ -36,9 +36,9 @@ namespace Pilcrow.Core.Helpers
             ;
         }
         
-        public static IEnumerable<Type> GetLeafSubClassTypes(Type parent)
+        public static IEnumerable<Type> GetLeafSubTypes(Type parent)
         {
-            var allTypes = GetSubClassTypes(parent);
+            var allTypes = GetSubTypes(parent);
             return from currentType in allTypes
                 where allTypes.Aggregate(true, (
                     leafType,
@@ -58,6 +58,13 @@ namespace Pilcrow.Core.Helpers
                 where !typeInfo.IsInterface
                 select type
             ;
+        }
+        
+        public static IEnumerable<Type> GetConcreteTypes(IEnumerable<Type> types)
+        {
+            return from type in types
+                where !type.GetTypeInfo().IsAbstract
+                select type;
         }
     }
 }
