@@ -265,5 +265,16 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
                 true, (v, x) => v && _dogPackRepository.ValidateObjectId(x.Id)
             ));
         }
+        
+        [TestMethod]
+        public void EmptySubDocumentIdTest()
+        {
+            var dogPack = new DogPack
+            {
+                Leader = null,
+                Members = null
+            };
+            _dogPackRepository.CreateOne(dogPack);
+        }
     }
 }
