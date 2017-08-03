@@ -58,10 +58,28 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         {}
     }
     
+    public class DogPack : Entity, IAutoMappable
+    {
+        public Dog Leader { get; set; }
+        
+        public List<Dog> Members { get; set; }
+    }
+    
+    public interface IDogPackRepository : IRepository<DogPack>
+    {
+    }
+    
+    public class DogPackRepository : Repository<DogPack>, IDogPackRepository
+    {
+        public DogPackRepository(IContext context) : base(context)
+        {}
+    }
+    
     [TestClass]
     public class RepositoryTests : IntegrationTest
     {
         private IAnimalRepository _animalRepository;
+        private IDogPackRepository _dogPackRepository;
         
         private Faker _faker;
         
@@ -70,6 +88,7 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         protected override void InitializeTestMethod()
         {
             _animalRepository = new AnimalRepository(DbContext);
+            _dogPackRepository = new DogPackRepository(DbContext);
             _faker = new Faker();
             _random = new Random();
         }
@@ -78,6 +97,7 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         {
             _random = null;
             _faker = null;
+            _dogPackRepository = null;
             _animalRepository = null;
         }
         
@@ -100,7 +120,12 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         
         private List<Animal> MakeAnimals(Func<Animal> maker, int min, int max)
         {
-            return RepositoryHelper.CreateObjects(min, max, _animalRepository, maker);
+            return RepositoryHelper.CreateObjects(min, max, maker);
+        }
+        
+        private List<Animal> CreateAnimals(Func<Animal> maker, int min, int max)
+        {
+            return RepositoryHelper.CreateObjects(min, max, maker, _animalRepository);
         }
         
         [TestMethod]
@@ -143,7 +168,7 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         [TestMethod]
         public void FindOneTest()
         {
-            var dogs = MakeAnimals(MakeDog, 8, 32);
+            var dogs = CreateAnimals(MakeDog, 8, 32);
             var dog = _faker.PickRandom(dogs);
             
             var nameStart = dog.Name.Substring(0, _random.Next(1, dog.Name.Length));
@@ -172,8 +197,8 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         [TestMethod]
         public void FindManyTest()
         {
-            var cats = MakeAnimals(MakeCat, 4, 8);
-            var dogs = MakeAnimals(MakeDog, 4, 8);
+            var cats = CreateAnimals(MakeCat, 4, 8);
+            var dogs = CreateAnimals(MakeDog, 4, 8);
             
             var findManyResult = _animalRepository.FindMany(x => x is Cat);
             Assert.IsTrue(findManyResult.Success);
@@ -184,7 +209,7 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         [TestMethod]
         public void FindManySkipTest()
         {
-            MakeAnimals(MakeDog, 8, 8);
+            CreateAnimals(MakeDog, 8, 8);
             var findManyDogsResult = _animalRepository.FindMany(x => true);
             var linqSkip = findManyDogsResult.Objects.Skip(4);
             var dbSkip = findManyDogsResult.Skip(4).Objects;
@@ -194,7 +219,7 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         [TestMethod]
         public void FindManyTakeTest()
         {
-            MakeAnimals(MakeDog, 8, 8);
+            CreateAnimals(MakeDog, 8, 8);
             var findManyDogsResult = _animalRepository.FindMany(x => true);
             var linqTake = findManyDogsResult.Objects.Take(4);
             var dbTake = findManyDogsResult.Take(4).Objects;
@@ -204,7 +229,7 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         [TestMethod]
         public void FindManySortByAscendingTest()
         {
-            var sortedCats = MakeAnimals(MakeCat, 32, 64).OrderBy(x => x.Age);
+            var sortedCats = CreateAnimals(MakeCat, 32, 64).OrderBy(x => x.Age);
             var dbSortedCats = _animalRepository
                 .FindMany(x => true)
                 .SortByAscending(x => x.Age)
@@ -216,13 +241,29 @@ namespace Pilcrow.Tests.Projects.Db.Repositories
         [TestMethod]
         public void FindManySortByDescendingTest()
         {
-            var sortedCats = MakeAnimals(MakeCat, 32, 64).OrderByDescending(x => x.Age);
+            var sortedCats = CreateAnimals(MakeCat, 32, 64).OrderByDescending(x => x.Age);
             var dbSortedCats = _animalRepository
                 .FindMany(x => true)
                 .SortByDescending(x => x.Age)
                 .Objects;
             
             Assert.IsTrue(sortedCats.SequenceEqual(dbSortedCats));
+        }
+        
+        [TestMethod]
+        public void SubDocumentIdTest()
+        {
+            var dogPack = new DogPack
+            {
+                Leader = MakeDog(),
+                Members = MakeAnimals(MakeDog, 8, 32).Cast<Dog>().ToList()
+            };
+            _dogPackRepository.CreateOne(dogPack);
+            Assert.IsTrue(_dogPackRepository.ValidateObjectId(dogPack.Id));
+            Assert.IsTrue(_dogPackRepository.ValidateObjectId(dogPack.Leader.Id));
+            Assert.IsTrue(dogPack.Members.Aggregate(
+                true, (v, x) => v && _dogPackRepository.ValidateObjectId(x.Id)
+            ));
         }
     }
 }

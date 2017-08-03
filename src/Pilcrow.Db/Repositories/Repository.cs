@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -72,7 +73,7 @@ namespace Pilcrow.Db.Repositories
             }
         }
         
-        private void RequireNewObject(TModel entity)
+        protected void RequireNewObject(TModel entity)
         {
             if (!string.IsNullOrEmpty(entity.Id))
                 throw new IdIsNotNullOrEmptyException(entity.Id);
@@ -80,7 +81,7 @@ namespace Pilcrow.Db.Repositories
                 entity.ModificationTime = DateTime.Now;
         }
         
-        private void RequireExistingObject(TModel entity)
+        protected void RequireExistingObject(TModel entity)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -88,6 +89,29 @@ namespace Pilcrow.Db.Repositories
                 throw new IdIsNullOrEmptyException(entity.GetType());
             if (!ValidateObjectId(entity.Id))
                 throw new InvalidIdException(entity.Id);
+        }
+        
+        protected void HandleSubDocumentIds(IEntity entity, int level = 0)
+        {
+            var skippables = new List<string>
+            {
+                "ObjectId",
+                "CreationTime",
+                "ModificationTime"
+            };
+            if (level > 0 && string.IsNullOrEmpty(entity.Id))
+                entity.Id = ObjectId.GenerateNewId().ToString();
+            foreach (var property in entity.GetType().GetProperties())
+            {
+                if (skippables.Contains(property.Name))
+                    continue;
+                var value = property.GetValue(entity);
+                if (value is IEntity)
+                    HandleSubDocumentIds(value as IEntity, level + 1);
+                else if (value is IEnumerable<IEntity>)
+                    foreach (var item in value as IEnumerable<IEntity>)
+                        HandleSubDocumentIds(item, level + 1);
+            }
         }
         
         public new string CollectionName(Type type)
@@ -103,6 +127,7 @@ namespace Pilcrow.Db.Repositories
         public void CreateOne(TModel entity)
         {
             RequireNewObject(entity);
+            HandleSubDocumentIds(entity);
             Collection.InsertOne(entity);
         }
         
@@ -113,7 +138,11 @@ namespace Pilcrow.Db.Repositories
         
         public void CreateMany(IEnumerable<TModel> entities)
         {
-            entities.ToList().ForEach(RequireNewObject);
+            entities.ToList().ForEach(x =>
+            {
+                RequireNewObject(x);
+                HandleSubDocumentIds(x);
+            });
             Collection.InsertMany(entities);
         }
         
@@ -125,6 +154,7 @@ namespace Pilcrow.Db.Repositories
         public void UpdateOne(TModel entity)
         {
             RequireExistingObject(entity);
+            HandleSubDocumentIds(entity);
             entity.ModificationTime = DateTime.Now;
             var filter = Builders<TModel>.Filter.Eq("_id", entity.ObjectId);
             var result = Collection.ReplaceOne(filter, entity);
